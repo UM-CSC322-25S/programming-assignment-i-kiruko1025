@@ -1,0 +1,202 @@
+
+<!-- saved from url=(0079)https://www.cs.miami.edu/home/wuchtys/CSC322-25S/Assessment/BoatManagement.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Boat Management</title>
+
+</head><body align="JUSTIFY" data-new-gr-c-s-check-loaded="14.1226.0" data-gr-ext-installed="">
+<hr><!--------------------------------------------------------------------------------------------->
+<p>
+The Marina Manager of <a href="https://www.nauticalventures.com/marina">Nautical Ventures</a> 
+needs a simple program to track the various boats stored and being repaired at the marina, and 
+the charges being levied on each:
+</p><ul>
+<li> Boats in 
+     <a href="https://www.shoremaster.com/about-shoremaster/news-events/articles/boat-dock-vs-boat-slip/">slips</a> 
+     - $12.50/foot/month
+</li><li> Boats on 
+     <a href="https://www.boatus.com/expert-advice/expert-advice-archive/2014/april/how-long-does-boat-bottom-paint-last">land for work</a>
+     - $14.00/foot/month
+</li><li> Boats on 
+     <a href="http://www.ezloader.com/">trailors</a>
+     - $25.00/foot/month
+</li><li> Boats in 
+     <a href="https://www.rmimarina.com/dry-storage">storage</a>
+     - $11.20/foot/month
+</li></ul>
+The program must allow for up to 120 boats, and must hold the following information about each 
+boat:
+<ul>
+<li> The <a href="https://www.veranda.com/luxury-lifestyle/a41001953/best-boat-names/">name</a> 
+     of the boat (up to 127 characters long, not containing a comma)
+</li><li> The length in feet - up to 100' (hint: choose a suitable data type)
+</li><li> Which type of place (slip/land/trailor/storage) (hint: use an <tt>enum</tt>
+     <a href="https://www.cs.miami.edu/home/wuchtys/CSC322-25S/Assessment/BoatManagementEnum.c">like this</a>)
+</li><li> Depending on the type, extra relevant information (use a <tt>union</tt>):
+     <ul>
+     <li> Slip - the slip number 1-85
+     </li><li> Land - the bay letter, A-Z
+     </li><li> Trailor - the trailor license tag
+     </li><li> Storage - the storage space number 1-50
+     </li></ul>
+</li><li> The amount of <a href="https://www.discoverboating.com/buying/costs-of-boat-ownership">
+     money owed</a> to the marina
+</li></ul>
+The data for each boat must be held in a <tt>malloc</tt>ed <tt>struct</tt> that is pointed to 
+from an element of an array of 120 pointers, some of which might not be in use because the 
+marina is not always full.
+<p>
+While the program is not running the data about the boats is stored in a
+<a href="https://www.howtogeek.com/348960/what-is-a-csv-file-and-how-do-i-open-it//">
+Comma Separated Values</a> file such as <a href="https://www.cs.miami.edu/home/wuchtys/CSC322-25S/Assessment/BoatData.csv.txt"><tt>BoatData.csv</tt></a>.
+When the program starts it must load the data from the file whose name is provided as the command 
+line argument, and when the program exits it must store the data back to that file.
+</p><p>
+Once the boat data is loaded the program must offer a 
+<a href="https://www.pizzahut.com/index.php?menu=#/menu">menu</a> of options:
+</p><ol>
+<li> Print the boat inventory, sorted alphabetically by boat name (hint: keep the array packed and
+     sorted by boat name)
+</li><li> Add a boat by providing as a string that looks like one line of the <tt>.csv</tt> file
+</li><li> Remove a boat by name
+</li><li> Accept a payment for the boat, up to the amount owed
+</li><li> Update the amount owed because a new month has started
+</li><li> Exit 
+</li></ol>
+The program must be user friendly, but you can assume that the user will enter reasonable data 
+values:
+<ul>
+<li> Menu options must be accepted in upper and lower case.
+     The user might enter an invalid option, which results in an error message and is ignored.
+</li><li> Boat names must be accepted without regard for case.
+</li><li> Boat data in <tt>.csv</tt> format will be correctly formatted and within limits
+</li><li> Numeric input will be syntactically correct.
+</li><li> The user might enter a non-existent boat name for removal and payment, or an amount too
+     large for payment, in which case the action is not completed.
+</li></ul>
+<p>
+Here's what a run should look like (with the keyboard input shown in italics) ...
+</p><pre>geoff@johnston: BoatManagement BoatData.csv
+
+Welcome to the Boat Management System
+-------------------------------------
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>Q</em>
+Invalid option Q
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>i</em>
+Big Brother           20'    slip   # 27   Owes $1200.00
+Magic                 38' trailor 7KZ099   Owes $   0.00
+Moon Glow             30'    slip   # 13   Owes $ 500.00
+Osita                 40'    land      C   Owes $1000.07
+Run About             18' storage   # 13   Owes $ 200.50
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>A</em>
+Please enter the boat data in CSV format                 : <em>Brooks,34,trailor,AAR666,99.00</em>
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>I</em>
+Big Brother           20'    slip   # 27   Owes $1200.00
+Brooks                34' trailor AAR666   Owes $  99.00
+Magic                 38' trailor 7KZ099   Owes $   0.00
+Moon Glow             30'    slip   # 13   Owes $ 500.00
+Osita                 40'    land      C   Owes $1000.07
+Run About             18' storage   # 13   Owes $ 200.50
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>r</em>
+Please enter the boat name                               : <em>Lost Soul</em>
+No boat with that name
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>R</em>
+Please enter the boat name                               : <em>MAGIC</em>
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>i</em>
+Big Brother           20'    slip   # 27   Owes $1200.00
+Brooks                34' trailor AAR666   Owes $  99.00
+Moon Glow             30'    slip   # 13   Owes $ 500.00
+Osita                 40'    land      C   Owes $1000.07
+Run About             18' storage   # 13   Owes $ 200.50
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>P</em>
+Please enter the boat name                               : <em>Broke Boater</em>
+No boat with that name
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>P</em>
+Please enter the boat name                               : <em>Moon Glow</em>
+Please enter the amount to be paid                       : <em>2000</em>
+That is more than the amount owed, $500.00
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>P</em>
+Please enter the boat name                               : <em>Moon Glow</em>
+Please enter the amount to be paid                       : <em>200</em>
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>i</em>
+Big Brother           20'    slip   # 27   Owes $1200.00
+Brooks                34' trailor AAR666   Owes $  99.00
+Moon Glow             30'    slip   # 13   Owes $ 300.00
+Osita                 40'    land      C   Owes $1000.07
+Run About             18' storage   # 13   Owes $ 200.50
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>m</em>
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>I</em>
+Big Brother           20'    slip   # 27   Owes $1450.00
+Brooks                34' trailor AAR666   Owes $ 949.00
+Moon Glow             30'    slip   # 13   Owes $ 675.00
+Osita                 40'    land      C   Owes $1560.07
+Run About             18' storage   # 13   Owes $ 402.10
+
+(I)nventory, (A)dd, (R)emove, (P)ayment, (M)onth, e(X)it : <em>x</em>
+
+Exiting the Boat Management System
+</pre>
+Here's what the saved <tt>.csv</tt> file could look like:
+<pre>Big Brother,20,slip,27,1450.00
+Brooks,34,trailor,AAR666,949.00
+Moon Glow,30,slip,13,675.00
+Osita,40,land,C,1560.07
+Run About,18,storage,13,402.10
+</pre>
+
+Your must submit your project on GitHub
+You may sit with the TA when (s)he runs your program in the lab session
+so you can see together how well it works.
+<p>
+Your project is worth 20% of the course grade.
+It will be assessed for functionality and programming style using 
+<a href="https://www.cs.miami.edu/home/wuchtys/CSC322-25S/Assessment/BoatManagementMarkingScheme.html">this marking scheme</a>.
+Please review the <a href="https://www.cs.miami.edu/home/wuchtys/CSC322-25S/Admin/">policies on assessment</a> in
+the administration document.
+</p><hr><!--------------------------------------------------------------------------------------\
+------->
+<!--
+
+<HR><!--------------------------------------------------------------------------------------\
+------->
+<!--<H3>Answer</H3>
+<UL>
+<LI> <A HREF="Answers/BoatManagement.c">Boat Management</A>
+</UL>
+-->
+<hr><!--------------------------------------------------------------------------------------------->
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"><template shadowrootmode="open"><style>
+      div.grammarly-desktop-integration {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select:none;
+        user-select:none;
+      }
+
+      div.grammarly-desktop-integration:before {
+        content: attr(data-content);
+      }
+    </style><div aria-label="grammarly-integration" role="group" tabindex="-1" class="grammarly-desktop-integration" data-content="{&quot;mode&quot;:&quot;full&quot;,&quot;isActive&quot;:true,&quot;isUserDisabled&quot;:false}"></div></template></grammarly-desktop-integration></html>
